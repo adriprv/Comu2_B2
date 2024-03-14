@@ -7,7 +7,7 @@
 # GNU Radio Python Flow Graph
 # Title: Not titled yet
 # Author: radiogis_director
-# GNU Radio version: 3.9.0.0
+# GNU Radio version: 3.9.8.0
 
 from distutils.version import StrictVersion
 
@@ -37,8 +37,8 @@ import signal
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
-import epy_block_0
 import numpy as np
+import prac3a_epy_block_0 as epy_block_0  # embedded python block
 
 
 
@@ -82,7 +82,7 @@ class prac3a(gr.top_block, Qt.QWidget):
         ##################################################
         self.h = h = np.array([1,1,1,1])
         self.Sps = Sps = len(h)
-        self.Rb = Rb = 32000
+        self.Rb = Rb = 64000
         self.samp_rate = samp_rate = Rb*Sps
         self.N = N = 1024
 
@@ -100,7 +100,7 @@ class prac3a(gr.top_block, Qt.QWidget):
         self.Menu_grid_layout_1 = Qt.QGridLayout()
         self.Menu_layout_1.addLayout(self.Menu_grid_layout_1)
         self.Menu.addTab(self.Menu_widget_1, 'Freq')
-        self.top_grid_layout.addWidget(self.Menu)
+        self.top_layout.addWidget(self.Menu)
         self.qtgui_vector_sink_f_0 = qtgui.vector_sink_f(
             N,
             -samp_rate/2,
@@ -118,6 +118,7 @@ class prac3a(gr.top_block, Qt.QWidget):
         self.qtgui_vector_sink_f_0.set_x_axis_units("Hz")
         self.qtgui_vector_sink_f_0.set_y_axis_units("Watss/Hz")
         self.qtgui_vector_sink_f_0.set_ref_level(0)
+
 
         labels = ['p4', '', '', '', '',
             '', '', '', '', '']
@@ -137,7 +138,7 @@ class prac3a(gr.top_block, Qt.QWidget):
             self.qtgui_vector_sink_f_0.set_line_color(i, colors[i])
             self.qtgui_vector_sink_f_0.set_line_alpha(i, alphas[i])
 
-        self._qtgui_vector_sink_f_0_win = sip.wrapinstance(self.qtgui_vector_sink_f_0.pyqwidget(), Qt.QWidget)
+        self._qtgui_vector_sink_f_0_win = sip.wrapinstance(self.qtgui_vector_sink_f_0.qwidget(), Qt.QWidget)
         self.Menu_grid_layout_0.addWidget(self._qtgui_vector_sink_f_0_win, 3, 0, 1, 1)
         for r in range(3, 4):
             self.Menu_grid_layout_0.setRowStretch(r, 1)
@@ -189,7 +190,7 @@ class prac3a(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_marker(i, markers[i])
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
 
-        self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
+        self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.qwidget(), Qt.QWidget)
         self.Menu_grid_layout_0.addWidget(self._qtgui_time_sink_x_0_win, 2, 0, 1, 1)
         for r in range(2, 3):
             self.Menu_grid_layout_0.setRowStretch(r, 1)
@@ -236,7 +237,7 @@ class prac3a(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_color(i, colors[i])
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
 
-        self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
+        self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
         self.Menu_grid_layout_1.addWidget(self._qtgui_freq_sink_x_0_win, 3, 0, 1, 1)
         for r in range(3, 4):
             self.Menu_grid_layout_1.setRowStretch(r, 1)
@@ -250,14 +251,13 @@ class prac3a(gr.top_block, Qt.QWidget):
         self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_float*1, N)
         self.blocks_null_sink_0 = blocks.null_sink(gr.sizeof_float*1)
         self.blocks_multiply_const_vxx_1 = blocks.multiply_const_vff([1/(N*samp_rate)]*N)
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(2.)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(2)
         self.blocks_complex_to_mag_squared_0 = blocks.complex_to_mag_squared(N)
         self.blocks_char_to_float_0 = blocks.char_to_float(1, 1)
         self.blocks_add_xx_0 = blocks.add_vff(1)
         self.analog_random_source_x_0 = blocks.vector_source_b(list(map(int, numpy.random.randint(0, 2, 1000000))), True)
-        self.analog_noise_source_x_0 = analog.noise_source_f(analog.GR_GAUSSIAN, 1, 76)
-        self.analog_const_source_x_0_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, -1./2.)
-
+        self.analog_noise_source_x_0 = analog.noise_source_f(analog.GR_GAUSSIAN, 2, 76)
+        self.analog_const_source_x_0_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, -500e-3)
 
 
         ##################################################
